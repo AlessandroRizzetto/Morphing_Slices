@@ -53,9 +53,9 @@ class RoutingTopo(Topo):
         self.addLink("s6", "s9", **host_link_config)
         self.addLink("s7", "s8", **host_link_config)
         self.addLink("s7", "s9", **host_link_config)
-        self.addLink("s7", "s10", **host_link_config)
         self.addLink("s8", "s10", **host_link_config)
-        self.addLink("s9", "s10", **host_link_config)        
+        self.addLink("s9", "s10", **host_link_config)
+        self.addLink("s7", "s10", **host_link_config)        
 
 
 topos = {'RoutingTopo': (lambda: RoutingTopo() )}     
