@@ -29,6 +29,20 @@ The topologies that we have decided to implement are:
 Specific base topology built with MININET: 
 <p align="center">
   <img src="/pictures/BASE.png" width="700" height="420">
+ 
+Table that maps each connection on the right port for every switch of the base topology:
+|HOST|Port 1|Port 2|Port 3|Port 4|Port 5|Port 6|
+|:--|:--:|:--:|:--:|:--:|:--:|:--:|
+**S1**|  H1   | S2  | S3	| S4  | - | -
+**S2**|  H2	  | S1	 | S4 | S5  | - | -
+**S3**|  H3	  | S1	 | S4 | S6  | - | -
+**S4**|  S1	  | S2	 | S3 | S5  | S6 | S7 
+**S5**|  H4   | H5	 | S2 | S4  | S8 | -
+**S6**|  H6	  | H7	 | S3 | S4  | S9 | -
+**S7**|  S4	  | S8	 | S9 | S10 | - | -
+**S8**|  H8   | S5   | S7 | S10 | - | -
+**S9**|  H9	  | S6   | S7 | S10 | - | -
+**S10**|  H10 | S8   | S9 | S7  | - | -
 
 # Usage
 
