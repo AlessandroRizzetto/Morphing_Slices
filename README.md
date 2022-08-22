@@ -14,7 +14,6 @@
         - [Linear topology](#Linear)
         - [Tree topology](#Tree)
         - [Star topology](#Star)
-        - [Ring topology](#Ring)
 
 # Intro
 The starting point of this project is a single domain base topology where we have full control of the network. The aim is to generate different slices as overlays of the original topology. This means that the actual base network remains unaltered but the perceived topology is different from the original one. It is important to understand that this is a virtualization process, new links can't be generated in the process of creating a new virtual slice.
@@ -26,11 +25,10 @@ The topologies that we have decided to implement are:
 - Tree topology
 - Linear topology
 - Star topology
-- Ring topology
 
 Specific base topology built with MININET: 
 <p align="center">
-  <img src="/pictures/BASE.PNG" width="700" height="420">
+  <img src="/pictures/BASE.png" width="700" height="420">
 
 # Usage
 
@@ -65,7 +63,7 @@ In order to create a slice with a linear topology only the path that connects S1
 The resulting topology connects H1, H2 and H4 through the S1-S2-S4 channel.
 
 <p align="center">
-  <img src="/pictures/LINEAR.PNG" width="700" height="420">
+  <img src="/pictures/LINEAR.png" width="700" height="420">
 
 ### Tree:
 In order to create a slice with a tree topology it is necessary to cut every connection involving S2 or S3.
@@ -73,7 +71,7 @@ The resulting topology is an horizontal tree, oriented from left to right with r
 Even if we wanted to add more devices to the the base topology on the S1-S9-S10 path, the implemented tree-controller is still going to correctly generate a tree topology and the new links would all act accordingly.
 
 <p align="center">
-  <img src="/pictures/TREE.PNG" width="700" height="420">
+  <img src="/pictures/TREE.png" width="700" height="420">
 
 
 ### Star:
@@ -81,12 +79,4 @@ In order to create a slice with a star topology, only the paths that connects th
 The resulting topology is a star where the packets must always go through the center to arrive at their destination.
 
 <p align="center">
-  <img src="/pictures/STAR.PNG" width="700" height="420">
-
-
-### Ring:
-In order to create a slice with a ring topology all the connections involving S6, S7, S9 or S10 are cut and the output ports of each remaining switch are mapped based on the input port of the arriving packets.
-The resulting topology is an oriented ring where the packets travel in one direction only; this means that if for example H1 wants to ping H3,the packets can't simply  follow the S1->S3 path, they must follow the ring topology and take the S1->S2->S4->S5->S3 path.
-
-<p align="center">
-  <img src="/pictures/RING.PNG" width="700" height="420">
+  <img src="/pictures/STAR.png" width="700" height="420">
