@@ -6,14 +6,13 @@ from ryu.ofproto import ofproto_v1_3
 from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
-class TreeTopo(app_manager.RyuApp):
-    avoid_dst =['ff:ff:ff:ff:ff:ff','33:33:ff:00:00:08', '33:33:00:00:00:02','33:33:00:00:00:16']
-    save_dst =['00:00:00:00:00:08','00:00:00:00:00:09','00:00:00:00:00:10']
+class StarTopo(app_manager.RyuApp):
+    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
+    save_dst =['00:00:00:00:00:01','00:00:00:00:00:08','00:00:00:00:00:09','00:00:00:00:00:10']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[2,3,5,6]
-    old_dst =''
     def __init__(self, *args, **kwargs):
-        super(TreeTopo, self).__init__(*args, **kwargs)
+        super(StarTopo, self).__init__(*args, **kwargs)
 
         self.mac_to_port = {}
 
@@ -42,7 +41,6 @@ class TreeTopo(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
-        global old_dst
         msg = ev.msg
         datapath = msg.datapath
         ofproto = datapath.ofproto
@@ -69,58 +67,36 @@ class TreeTopo(app_manager.RyuApp):
             conf=datapath.ports[x].config
             break
 
-
         if(dst not in self.avoid_dst and switch_id not in self.cutted):
-            if(self.old_dst != dst and self.old_dst != '' and dst not in self.avoid_dst):
-                self.logger.info("ARRIVED AT H%s",self.old_dst.split(':')[5][1])
             self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
+
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[switch_id][src] = in_port
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-
+        # works cutting the links beetween 8,9,10, otherwise loop
         if(switch_id in self.cutted):
             return
-        
+
         if(switch_id == 1 and in_port == 1):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 4
-        elif(switch_id == 1 and in_port == 4):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 1
-        elif(switch_id == 4 and in_port == 1):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 6
+            out_port = 4
         elif(switch_id == 4 and in_port == 6):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 1
-        elif(switch_id == 8  or switch_id == 9 and in_port != 3):
-            #non sono sicuro
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 3
-        elif(switch_id == 7 and in_port == 4):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = ofproto.OFPP_FLOOD
+            out_port = 1
+        elif(switch_id == 4 and in_port == 1):
+            out_port = 6
+        elif(switch_id == 1 and in_port == 4):
+            out_port = 1
+        elif(switch_id == 8 and in_port != 3):
+            out_port = 3
+        elif(switch_id == 9 and in_port != 3):
+            out_port = 3
+        elif(switch_id == 10 and in_port != 2):
+            out_port = 2
+        
         else:
             out_port = ofproto.OFPP_FLOOD
 
-        if(dst not in self.avoid_dst):
-            self.old_dst = dst
-
-            
         actions = [parser.OFPActionOutput(out_port)]
 
         # install a flow to avoid packet_in next time.
