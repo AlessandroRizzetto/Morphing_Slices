@@ -22,7 +22,7 @@ class RoutingTopo(Topo):
 
         # Create host 
         for i in range(10):
-            host_config = {"switch_id": "00:00:00:00:00:0"+str(i+1)}
+            host_config = {"host_id": "00:00:00:00:00:0"+str(i+1)}
             self.addHost("h%d" % (1+i), **host_config)
 
         # Add host links
