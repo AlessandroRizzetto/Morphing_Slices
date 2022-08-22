@@ -33,8 +33,8 @@ Specific base topology built with MININET:
 # Usage
 
 ```bash
-git clone https://github.com/elrich2610/Morphing-Slices.git
-cd Morphing-Slices
+git clone https://github.com/elrich2610/Morphing_Slices.git
+cd Morphing_Slices
 ```
 From now on  **2** separate terminals are needed.
 The first terminal is used to run the ryu-controller.
@@ -43,7 +43,6 @@ Each slice has its own ryu-controller, so it is necessary to run the one corresp
 
 ```bash
 #Terminal 1
-#virtual topologies: [fullOpen - tree - star - ring - linear]
 ./start.sh [virtual topology name]
 ```
 
@@ -56,7 +55,7 @@ Now the chosen virtual slice has been created on top of the physical topology.
 
 ### PoC
 Using the "pingall" command, it is possible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
-Another way to explore the newly created topology is to use the script "check.sh" which simply dumps the flow for each switch.
+Another way to explore the newly created topology is to use the script "dumpflow.sh" which simply dumps the flow for each switch.
 
 ### Linear:
 In order to create a slice with a linear topology only the path that connects S1, S2, and S3 is preserved, any other connection is cut.
