@@ -81,7 +81,7 @@ In order to create a slice with a star topology, only the paths that connects th
 The resulting topology is a star where the packets must always go through the center to arrive at their destination.
 
 <p align="center">
-  <img src="/pictures/star.png" width="700" height="420">
+  <img src="/pictures/Star.png" width="700" height="420">
 
 
 ### Ring:
