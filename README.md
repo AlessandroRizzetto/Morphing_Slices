@@ -10,7 +10,7 @@
 - [The project](#Intro)
 - [Base topology](#Mininet)
 - [How To](#Usage)
-    - [Proof of Concept](#PoC)
+    - [Proof of Concept](#How_to_test)
         - [Linear topology](#Linear)
         - [Tree topology](#Tree)
         - [Star topology](#Star)
@@ -45,50 +45,53 @@ Table that maps each connection on the right port for every switch of the base t
 **S10**|  H10 | S8   | S9 | S7  | - | -
 
 # Usage
-
 ```bash
 git clone https://github.com/elrich2610/Morphing_Slices.git
 cd Morphing_Slices
 ```
-From now on  **2** separate terminals are needed.
-The first terminal is used to run the ryu-controller.
-Each slice has its own ryu-controller, so it is necessary to run the one corresponding to the desired virtual topology.
-
+Two terminals are needed, one to run the ryu-controller and select the slice, the other to run the basic topology with Mininet.
+If you installed Comnetsemu directly on your environment you can run everything from one terminal that will independently open the second one:
+  
+```bash
+./start.py 
+```
+Otherwise, using Vagrant:
 
 ```bash
 #Terminal 1
 ./start.sh [virtual topology name]
 ```
-
-On the  second terminal, run the physical base topology created with mininet; once started it'll automatically connect to the mininet console
+  
 ```
 #Terminal 2
 sudo python3 baseTopology.py
 ```
 Now the chosen virtual slice has been created on top of the physical topology.
 
-### PoC
-Using the "pingall" command, it is possible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
-Another way to explore the newly created topology is to use the script "dumpflow.sh" which simply dumps the flow for each switch.
+### How to test
+Using the "pingall" Mininet command, it is feasible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
+Otherwise is possible to use the script "dumpflow.sh" which dumps the flow for each switch.
 
 ### Linear:
-In order to create a slice with a linear topology only the path that connects S1, S2, and S3 is preserved, any other connection is cut.
-The resulting topology connects H1, H2 and H4 through the S1-S2-S4 channel.
+With a view to creating a linear slice that connect S1,S2,S5,S8 only the path that connect these switch is preserved, cutting everything else.
+The result show a linear slice connecting H1, H2, H5, H8 throung the S1,S2,S5,S8 channel.
 
 <p align="center">
   <img src="/pictures/LINEAR.png" width="700" height="420">
 
 ### Tree:
-In order to create a slice with a tree topology it is necessary to cut every connection involving S2 or S3.
-The resulting topology is an horizontal tree, oriented from left to right with root S1.
-Even if we wanted to add more devices to the the base topology on the S1-S9-S10 path, the implemented tree-controller is still going to correctly generate a tree topology and the new links would all act accordingly.
+ that connect S1,S2,S5,S8 only the path that connect these switch is preserved, cutting everything else.
+The result show a linear slice connecting H1, H2, H5, H8 throung the S1,S2,S5,S8 channel.  
+
+With a view to creating a tree slice it is necessary to cut every connection involving S2, S3, s5, s6.
+The resulting topology is a tree with root S1.
+Even if we wanted to add more devices to the the base topology on the S1-S4-S7 path, the implemented tree-controller is still going to correctly generate a tree topology and the new links would all act accordingly.
 
 <p align="center">
   <img src="/pictures/TREE.png" width="700" height="420">
 
-
 ### Star:
-In order to create a slice with a star topology, only the paths that connects the center to the edge switches S1, S4, S5 and S6 are preserved, any other connection is cut. The logic behind this slice is that any packet coming from a port that isn't part of the path that connects the device to the center is sent to the central switch of the virtual star topology otherwise the flooding algorithm is applied.
+With a view to creating a star slice, only the paths that connects the center to the edge switches S1, S4, S5, S6, S7, S10 are preserved, any other connection is cut. The logic behind this slice is that any packet coming from a port that isn't part of the path that connects the device to the center is sent to the central switch of the virtual star topology otherwise the flooding algorithm is applied.
 The resulting topology is a star where the packets must always go through the center to arrive at their destination.
 
 <p align="center">
