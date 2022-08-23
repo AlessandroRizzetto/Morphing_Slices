@@ -6,13 +6,13 @@ from ryu.ofproto import ofproto_v1_3
 from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
-class StarTopo(app_manager.RyuApp):
+class TreeTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
     save_dst =['00:00:00:00:00:01','00:00:00:00:00:08','00:00:00:00:00:09','00:00:00:00:00:10']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[2,3,5,6]
     def __init__(self, *args, **kwargs):
-        super(StarTopo, self).__init__(*args, **kwargs)
+        super(TreeTopo, self).__init__(*args, **kwargs)
 
         self.mac_to_port = {}
 
@@ -80,19 +80,40 @@ class StarTopo(app_manager.RyuApp):
             return
 
         if(switch_id == 1 and in_port == 1):
-            out_port = 4
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 4
         elif(switch_id == 4 and in_port == 6):
-            out_port = 1
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
         elif(switch_id == 4 and in_port == 1):
-            out_port = 6
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 6
         elif(switch_id == 1 and in_port == 4):
-            out_port = 1
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
         elif(switch_id == 8 and in_port != 3):
-            out_port = 3
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 3
         elif(switch_id == 9 and in_port != 3):
-            out_port = 3
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 3
         elif(switch_id == 10 and in_port != 2):
-            out_port = 2
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 2
         
         else:
             out_port = ofproto.OFPP_FLOOD
