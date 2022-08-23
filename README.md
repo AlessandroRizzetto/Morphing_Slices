@@ -1,7 +1,7 @@
 <p align="center">
   <h2 align="center">Morphing Network Slicing</h2>
   <p align="center">
-  Alessandro Rizzetto
+  Alessandro Rizzetto [209783]
   </p>
 </p>
 <br>
@@ -69,7 +69,7 @@ sudo python3 baseTopology.py
 Now the chosen virtual slice has been created on top of the physical topology.
 
 ### How to test
-Using the "pingall" Mininet command, it is feasible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
+Using the "pingall" Mininet command, it is feasible to verify the structure of the newly created virtual topology. This command allows you to check the connection beetween hosts and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
 Otherwise is possible to use the script "dumpflow.sh" which dumps the flow for each switch.
 
 ### Linear:
@@ -80,9 +80,6 @@ The result show a linear slice connecting H1, H2, H5, H8 throung the S1,S2,S5,S8
   <img src="/pictures/LINEAR.png" width="700" height="420">
 
 ### Tree:
- that connect S1,S2,S5,S8 only the path that connect these switch is preserved, cutting everything else.
-The result show a linear slice connecting H1, H2, H5, H8 throung the S1,S2,S5,S8 channel.  
-
 With a view to creating a tree slice it is necessary to cut every connection involving S2, S3, s5, s6.
 The resulting topology is a tree with root S1.
 Even if we wanted to add more devices to the the base topology on the S1-S4-S7 path, the implemented tree-controller is still going to correctly generate a tree topology and the new links would all act accordingly.
