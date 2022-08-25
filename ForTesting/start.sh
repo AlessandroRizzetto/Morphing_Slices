@@ -1,5 +1,5 @@
 #/usr/bin/bash
-topo=(star star2 tree linear ring);
+topo=(star star2 tree linear );
 
 if [[ " "${topo[@]}" " == *" "$1" "* ]]
 then
@@ -7,7 +7,7 @@ then
 else
 		echo ""
 		echo "Invalid topology."
-		echo "['star', 'star2','ring', 'tree', 'linear']"
+		echo "['star', 'star2', 'tree', 'linear']"
 		echo ""
 		exit 1
 fi
