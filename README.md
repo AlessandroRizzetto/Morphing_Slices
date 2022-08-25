@@ -20,8 +20,8 @@ The starting point of this project is a single domain base topology where we hav
 This technique can be useful when a service provider wants to have different topologies on the same physical one.
 
 # Mininet
-We based our project on a partial mesh topology which gave us the flexibility needed to build multiple slices with different topologies on top of it.
-The topologies that we have decided to implement are:
+I based our project on a partial mesh topology which gave me the flexibility needed to build multiple slices with different topologies on top of it.
+The topologies that I have decided to implement are:
 - Tree topology
 - Linear topology
 - Star topology
@@ -45,6 +45,7 @@ Table that maps each connection on the right port for every switch of the base t
 **S10**|  H10 | S8   | S9 | S7  | - | -
 
 # Usage
+!!! To test the slices, follow the steps below within the "ForTesting" folder.
 ```bash
 git clone https://github.com/elrich2610/Morphing_Slices.git
 cd Morphing_Slices
